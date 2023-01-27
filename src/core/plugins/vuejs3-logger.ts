@@ -14,6 +14,7 @@ import {Log} from "vuejs3-logger";
 import {inject} from "vue";
 
 export class log {
+  // todo: A warning here: inject() can only be used inside setup() or functional components.
   private static logger: Log | undefined = inject('vuejs3-logger')
 
   public static debug(...args: any[]): void {

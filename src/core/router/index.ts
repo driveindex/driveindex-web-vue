@@ -1,16 +1,14 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
-
+import {createRouter, createWebHistory} from 'vue-router'
+import Drive from "@/app/views/Drive.vue";
 const routes = [
   {
-    path: '/:client/:account/:drive',
-    name: 'drive',
-    query: {
-      path: '/',
-      page: 0,
-      size: 20,
-    },
-    component: () => import("@/app/views/Drive.vue"),
+    path: '/:client/:account/:drive?',
+    name: 'main',
+    component: Drive,
+    meta:{
+      keepAlive: true
+    }
   },
   {
     path: '/admin',
@@ -18,13 +16,20 @@ const routes = [
     child: [
       {
         path: 'admin-common',
-        component: () => import("@/layouts/admin/common/AdminCommon.vue"),
+        component: () => import("@/app/components/admin/common/AdminCommon.vue"),
       },
       {
         path: 'admin-password',
-        component: () => import("@/layouts/admin/password/AdminPassword.vue"),
+        component: () => import("@/app/components/admin/password/AdminPassword.vue"),
       },
     ]
+  },
+  // if no valid pattern is matched above, redirect to the main page.
+  // todo: the redirect may have problem
+  {
+    path: '/',
+    name: 'index',
+    component: Drive
   },
 ]
 
