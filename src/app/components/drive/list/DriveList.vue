@@ -3,7 +3,7 @@
 
     <v-row class="row-center" no-gutters>
       <v-col class="v-col-12" v-if="hasParentDirectory">
-        <v-card class="file-info-card" @click.once="toParentPath">
+        <v-card class="file-info-card" @click.prevent="toParentPath">
           <div>
             <v-icon icon="mdi-arrow-up-bold"></v-icon>
             ...
@@ -41,6 +41,8 @@
 <script setup lang="ts">
 import {computed} from "vue";
 import {ContentItem} from "@/core/requests/APIs";
+import {CanonicalPath} from "@/core/util/CanonicalPath";
+
 const props = defineProps<{
   queryPath: string,
   fileList: Array<ContentItem>
@@ -48,8 +50,7 @@ const props = defineProps<{
 
 // Check if there is parent directory.
 const hasParentDirectory = computed(() => {
-  console.log(CanonicalPath.of(props.queryPath))
-  return CanonicalPath.of(props.queryPath).isRoot()
+  return !new CanonicalPath(props.queryPath).isRoot()
 })
 
 // Determine icon.
@@ -64,14 +65,13 @@ function determineIcon(mineType: string): string {
 
 // Format tools.
 import {sizeFormat, timeFormat} from "@/core/util/FileDetailParser";
-import {CanonicalPath} from "@/core/util/CanonicalPath";
 
 // Route back to parent directory.
-import {useRouter} from "vue-router";
+import { useRouter} from "vue-router";
 const router = useRouter()
 function toParentPath() {
   // todo: the path will contain slash and not encoded to %2F, if %2F is used, the path will be encoded to %252F
-  router.push({path: router.currentRoute.value.path, query: {path: CanonicalPath.of(props.queryPath).getParentPath().getPath()}})
+  router.push({path: router.currentRoute.value.path, query: {path: new CanonicalPath(props.queryPath).getParentPath()}})
 }
 </script>
 

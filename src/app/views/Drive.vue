@@ -39,10 +39,11 @@ let path = computed(() => {
   if (queryPath.value == null) {
     return ['Invalid path']
   }
-  const pathArray = ref(CanonicalPath.of(queryPath.value).toBreadcrumbItems())
+  const pathArray = ref(new CanonicalPath(queryPath.value).toBreadcrumbItems())
   for (const obj of pathArray.value) {
     obj.to = route.path + "?path=" + obj.to
   }
+  console.log(pathArray.value)
   return pathArray.value
 })
 

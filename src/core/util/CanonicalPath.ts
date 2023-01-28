@@ -1,112 +1,69 @@
 import {LinkedList} from "linked-list-typescript";
 
 export class CanonicalPath {
-  private readonly pathStack: LinkedList<string>
+  private readonly pathStack: LinkedList<string> = new LinkedList<string>()
   private readonly path: string
 
-  private constructor(pathStack: LinkedList<string>, path: string) {
-    this.pathStack = pathStack;
-    this.path = path;
-  }
-
-  public static readonly ROOT: CanonicalPath = CanonicalPath.of('/')
-
-  public static of(path: string): CanonicalPath {
-    path = path.replaceAll("\\", "/")
+  constructor(path: string) {
+    this.path = path.replaceAll("\\", "/")
       .replaceAll(":", "")
-    return new CanonicalPath(this.getPathStack(path), path)
+    this.pathStack = this.getPathStack(this.path)
   }
 
-  private static getPathStack(path: string): LinkedList<string> {
-    const pathStack: LinkedList<string> = new LinkedList<string>()
-    const stack: Array<string> = path.split("/")
-    for (const file of stack) {
-      if (file == "" || file == ".") {
+  private getPathStack(path: string): LinkedList<string> {
+    const pathArray: Array<string> = path.split("/")
+    if(pathArray[0] == "" && pathArray[1] == "") {
+      return new LinkedList<string>('/')
+    }
+    for (const path of pathArray) {
+      if (path == "" || path == ".") {
+        this.pathStack.append("/")
         continue
       }
-      if (file == "..") {
-        if (pathStack.length > 0) {
-          pathStack.removeTail()
-        }
-        continue
+      if (path == ".." && this.pathStack.length > 1) {
+        this.pathStack.removeTail()
       }
-      pathStack.append(file)
+      this.pathStack.append(path)
     }
-    return pathStack
-  }
-
-  private static ofStack(pathStack: LinkedList<string>): CanonicalPath {
-    return new CanonicalPath(pathStack, this.getPathByStack(pathStack))
-  }
-
-  private static getPathByStack(pathStack: LinkedList<string>): string {
-    let path = "/"
-    for (const file of pathStack) {
-      path = path + "/" + file
-    }
-    return path
-  }
-
-  public getParentPath(): CanonicalPath {
-    const path: LinkedList<string> = this.getPathStack()
-    if (path.length > 0) {
-      path.removeTail()
-    }
-    return CanonicalPath.ofStack(path)
+    return this.pathStack
   }
 
   public getPath(): string {
-    return this.path
+      return this.pathStack.toArray().join("/").replace("//", "/")
   }
 
-  public getPathStack(): LinkedList<string> {
-    const clone = new LinkedList<string>()
-    for (const file of this.pathStack) {
-      clone.append(file)
+  public getParentPath(): string {
+    this.pathStack.removeTail()
+    if(!this.isFile()){
+      this.pathStack.removeTail()
     }
-    return clone
+    console.log(this.pathStack.toArray(), 'length')
+    return this.getPath()
   }
 
   public isRoot(): boolean {
-    return this.pathStack.length > 0
+    return this.pathStack.length == 1
   }
 
-  public getFileName(): string {
-    if (this.pathStack.length <= 0) {
-      return '/'
-    } else {
-      return this.pathStack.tail
-    }
+  public isFile(): boolean {
+    return !this.path.endsWith("/")
   }
 
-  public toBreadcrumbItems(): BreadcrumbItem[] {
-    let path: CanonicalPath = this
-    const items: LinkedList<any> = new LinkedList<any>()
-    while (path.isRoot()) {
-      items.append({
-        title: path.getFileName(),
-        // todo: Find problem in the algorithm, try not use replacement.
-        /*
-        * Problem: if the path is "%2FAMD%2Ftest%2F123"
-        * the 3 elements' getPath() method will return
-        * /AMD/test/123
-        * //AMD/test
-        * //AMD
-        * except the last element's getPath method, others returned more than 1 slash.
-        * */
-        to: path.getPath().replaceAll("//", "/").replaceAll('/', "%2F")
+  public toBreadcrumbItems(): Array<BreadcrumbItem> {
+    const breadCrumbItems: Array<BreadcrumbItem> = []
+    console.log(this.pathStack.toArray(), 'breadCrumbItems')
+    for(const item of this.pathStack.toArray()) {
+      breadCrumbItems.push({
+        title: item,
+        to: this.pathStack.toArray().slice(0, this.pathStack.toArray().indexOf(item) + 1).join("/").replace("//", "/")
       })
-      path = path.getParentPath()
     }
-    items.append({
-      title: '/',
-      to: '%2F',
-    })
-    return items.toArray().reverse()
+    if(!this.isFile() && !this.isRoot()){
+      breadCrumbItems.pop()
+    }
+    return breadCrumbItems
   }
-
 }
-
 interface BreadcrumbItem {
   title: string,
   to: string,
