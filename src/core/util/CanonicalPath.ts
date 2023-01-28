@@ -49,6 +49,11 @@ export class CanonicalPath {
     return !this.path.endsWith("/")
   }
 
+  public toChildrenPath(name: string): string {
+    this.pathStack.append(name)
+    return this.getPath()
+  }
+
   public toBreadcrumbItems(): Array<BreadcrumbItem> {
     const breadCrumbItems: Array<BreadcrumbItem> = []
     console.log(this.pathStack.toArray(), 'breadCrumbItems')

@@ -14,8 +14,18 @@
         </v-card-actions>
       </v-card>
     </v-row>
-
-    <DriveList :fileList="fileList" :query-path="queryPath"/>
+    <v-card class="file-list-card" :loading="loadCard">
+      <DriveList :fileList="fileList"
+                 :query-path="queryPath"
+                 :load-card="loadCard"
+      />
+      <v-row class="row-center empty-list" no-gutters
+             v-if="fileList.length === 0 && Object.keys(fileData).length === 0 && !loadCard">
+        <v-icon icon="mdi-cloud-question" style="font-size: 50px"></v-icon>
+        <div>OOPS, No result found with given path</div>
+      </v-row>
+      <DriveFile v-if="showFile" :fileData="fileData"/>
+    </v-card>
   </v-container>
 </template>
 
@@ -23,7 +33,7 @@
 import DriveList from "@/app/components/drive/list/DriveList.vue";
 import {CanonicalPath} from "@/core/util/CanonicalPath";
 import {useRoute} from "vue-router";
-import {computed, reactive, ref, watch, watchEffect} from "vue";
+import {computed, reactive, Ref, ref, watch, watchEffect} from "vue";
 
 const route = reactive(useRoute())
 let queryPath = ref(route.query.path as string)
@@ -48,22 +58,46 @@ let path = computed(() => {
 })
 
 // File list.
-import {getFileListInfo, FileListInfo, ContentItem} from "@/core/requests/APIs";
+// If the return value mine_type is not a directory, display the file.
+import {getFileListInfo, FileListInfo, ContentItem, FileData} from "@/core/requests/APIs";
+import DriveFile from "@/app/components/drive/file/DriveFile.vue";
 
-let fileList = ref(Array<ContentItem>())
+const fileList = ref(Array<ContentItem>())
+const fileData = ref({} as FileData)
+const showFile: Ref<boolean> = ref(false)
+const loadCard = ref(true)
 watchEffect(async () => {
-  await getFileListInfo(queryPath.value).then((response: FileListInfo) => {
-    fileList.value = response.data.content
+  loadCard.value = true
+  fileList.value = []
+  fileData.value = {} as FileData
+  showFile.value = false
+  await getFileListInfo(queryPath.value).then((response) => {
+    console.log(response, 'response')
+    if (response.data.mine_type  == "directory") {
+      fileList.value = response.data.content as Array<ContentItem>
+    } else {
+      showFile.value = true
+      fileData.value = response as FileData
+      console.log(response)
+    }
+    loadCard.value = false
   }).catch((error) => {
     // todo: handle possible error
     console.log(error)
   })
 })
+
+
 </script>
 
 <style scoped>
 .row-center {
   justify-content: center;
+}
+
+.file-list-card {
+  padding: 1px;
+  font-size: 14px;
 }
 
 .card-fill {
@@ -76,5 +110,14 @@ watchEffect(async () => {
   padding: 0;
   justify-content: flex-start;
   align-items: center;
+}
+
+.empty-list {
+  width: 100%;
+  display: flex;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 </style>
