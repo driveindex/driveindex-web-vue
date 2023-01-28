@@ -1,11 +1,9 @@
 <template>
-
+  <div></div>
 </template>
 
-<script>
-export default {
-  name: "FileListItem"
-}
+<script setup lang="ts">
+
 </script>
 
 <style scoped>

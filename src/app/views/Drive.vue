@@ -15,34 +15,12 @@
       </v-card>
     </v-row>
 
-    <v-card class="file-list-card">
-      <v-row class="row-center" no-gutters>
-        <v-col
-          class="v-col-12"
-          v-for="item in fileList"
-          :key="item.name"
-        >
-          <v-card class="file-info-card">
-            <div>
-              <v-icon :icon="determineIcon(item.mine_type)"></v-icon>
-              {{ item.name }}
-            </div>
-            <div class="file-detail file-details-hide">
-              <div class="detail-item">
-                {{timeFormat(item.info.modified_time)}}
-              </div>
-              <div class="detail-item">
-                {{sizeFormat(item.info.size)}}
-              </div>
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-card>
+    <DriveList :fileList="fileList" :query-path="queryPath"/>
   </v-container>
 </template>
 
 <script setup lang="ts">
+import DriveList from "@/app/components/drive/list/DriveList.vue";
 import {CanonicalPath} from "@/core/util/CanonicalPath";
 import {useRoute} from "vue-router";
 import {computed, reactive, ref, watch, watchEffect} from "vue";
@@ -69,7 +47,7 @@ let path = computed(() => {
 })
 
 // File list.
-import {getFileListInfo, FileListInfo, ContentItem} from "@/core/requests/apis";
+import {getFileListInfo, FileListInfo, ContentItem} from "@/core/requests/APIs";
 
 let fileList = ref(Array<ContentItem>())
 watchEffect(async () => {
@@ -79,21 +57,7 @@ watchEffect(async () => {
     // todo: handle possible error
     console.log(error)
   })
-  console.log(fileList.value)
 })
-
-// Determine icon.
-function determineIcon(mineType: string): string {
-  if (mineType == 'directory') {
-    return 'mdi-folder'
-  } else if (mineType == 'application/zip') {
-    return 'mdi-zip-box'
-  }
-  return 'mdi-file'
-}
-
-// Format tools.
-import {sizeFormat, timeFormat} from "@/core/util/fileDetailParser";
 </script>
 
 <style scoped>
@@ -111,37 +75,5 @@ import {sizeFormat, timeFormat} from "@/core/util/fileDetailParser";
   padding: 0;
   justify-content: flex-start;
   align-items: center;
-}
-
-.file-list-card {
-  padding: 1px;
-  font-size: 14px;
-}
-
-.file-info-card {
-  margin: 5px;
-  padding: 5px;
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.file-detail {
-  position: absolute;
-  right: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.detail-item {
-  margin: 0 5px;
-}
-
-@media (max-width: 600px) {
-  .file-details-hide {
-    display: none;
-  }
 }
 </style>

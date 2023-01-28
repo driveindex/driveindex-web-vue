@@ -45,7 +45,7 @@ export function getFileListInfo(path: string): Promise<FileListInfo> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve({
-        "data": {
+        data: {
           "total_page": 1,
           "total_count": 2,
           "called_name": {
@@ -54,36 +54,7 @@ export function getFileListInfo(path: string): Promise<FileListInfo> {
           },
           "name": "3D制作",
           "mine_type": "directory",
-          "content": [
-            {
-              "name": "MikuMikuDance",
-              "mine_type": "directory",
-              "info": {
-                "create_time": 1589893750000,
-                "modified_time": 1616738768000,
-                "size": 234119631,
-                "web_url": ""
-              },
-              "detail": {
-                "child_count": 6
-              }
-            },
-            {
-              "name": "MarvelousDesigner 7 Enterprise x64.zip",
-              "mine_type": "application/zip",
-              "info": {
-                "create_time": 1589893181000,
-                "modified_time": 1570767752000,
-                "size": 727404886,
-                "web_url": ""
-              },
-              "detail": {
-                "quick_xor_hash": "RSBlAuJ7HmZyvqvHe5al22r7OYk\u003d",
-                "sha1_hash": "",
-                "sha256_hash": ""
-              }
-            }
-          ]
+          "content": []
         },
         code: 1,
         message: "message",
