@@ -24,35 +24,20 @@
 </template>
 
 <script setup lang="ts">
-import {FileData, getFileListInfo, requestQuery} from "@/core/requests/APIs";
-import {reactive, ref, watchEffect} from "vue";
-import {baseURL} from "@/core/requests";
-import {useRoute} from "vue-router";
+import {FileData} from "@/core/requests/APIs";
+import {ref} from "vue";
+import {baseURL} from "@/core/requests/";
+import {useStore} from "@/core/store";
 
+const store = useStore()
 const props = defineProps<{
   fileData: FileData
 }>()
 
 const data = ref(props.fileData)
 
+let routeVars = ref(store.routeVars)
 
-
-
-const route = reactive(useRoute())
-let routeVars = ref({} as requestQuery)
-
-// Update routeVars when route changes.
-watchEffect(() => {
-  routeVars.value.path = route.query.path as string
-  routeVars.value.drive = route.params.drive.toString()
-  routeVars.value.password = password.value
-})
-function submitPassword(){
-  getFileListInfo(routeVars.value).then((res) => {
-    data.value = res.data
-    console.log(res)
-  })
-}
 function download() {
   window.open(baseURL + '/download?path=' + routeVars.value)
 }
@@ -85,35 +70,13 @@ function copyToClipboard() {
   align-items: center;
 }
 
-.file-card-main{
-  background: rgb(238,238,238);
+.file-card-main {
+  background: rgb(238, 238, 238);
   margin: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   font-size: 20px;
-}
-
-.password-card{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 20px;
-  padding: 10px;
-  height: 500px;
-}
-
-.password-box{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 20px;
-}
-
-.password-input{
-  width: 100%;
 }
 </style>

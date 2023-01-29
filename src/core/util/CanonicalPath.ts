@@ -1,18 +1,23 @@
 import {LinkedList} from "linked-list-typescript";
+import {routeString} from "@/core/store";
 
 export class CanonicalPath {
   private readonly pathStack: LinkedList<string> = new LinkedList<string>()
   private readonly path: string
 
-  constructor(path: string) {
-    this.path = path.replaceAll("\\", "/")
-      .replaceAll(":", "")
-    this.pathStack = this.getPathStack(this.path)
+  constructor(path: routeString) {
+    if (path == null) {
+      this.path = "/"
+    } else {
+      this.path = path.replaceAll("\\", "/")
+        .replaceAll(":", "")
+      this.pathStack = this.getPathStack(this.path)
+    }
   }
 
   private getPathStack(path: string): LinkedList<string> {
     const pathArray: Array<string> = path.split("/")
-    if(pathArray[0] == "" && pathArray[1] == "") {
+    if (pathArray[0] == "" && pathArray[1] == "") {
       return new LinkedList<string>('/')
     }
     for (const path of pathArray) {
@@ -29,15 +34,14 @@ export class CanonicalPath {
   }
 
   public getPath(): string {
-      return this.pathStack.toArray().join("/").replace("//", "/")
+    return this.pathStack.toArray().join("/").replace("//", "/")
   }
 
   public getParentPath(): string {
     this.pathStack.removeTail()
-    if(!this.isFile()){
+    if (!this.isFile()) {
       this.pathStack.removeTail()
     }
-    console.log(this.pathStack.toArray(), 'length')
     return this.getPath()
   }
 
@@ -56,19 +60,19 @@ export class CanonicalPath {
 
   public toBreadcrumbItems(): Array<BreadcrumbItem> {
     const breadCrumbItems: Array<BreadcrumbItem> = []
-    console.log(this.pathStack.toArray(), 'breadCrumbItems')
-    for(const item of this.pathStack.toArray()) {
+    for (const item of this.pathStack.toArray()) {
       breadCrumbItems.push({
         title: item,
         to: this.pathStack.toArray().slice(0, this.pathStack.toArray().indexOf(item) + 1).join("/").replace("//", "/")
       })
     }
-    if(!this.isFile() && !this.isRoot()){
+    if (!this.isFile() && !this.isRoot()) {
       breadCrumbItems.pop()
     }
     return breadCrumbItems
   }
 }
+
 interface BreadcrumbItem {
   title: string,
   to: string,

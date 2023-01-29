@@ -66,25 +66,39 @@ export interface ContentItem {
   }
 }
 
-export interface requestQuery {
-  path: string,
-  drive?: string,
-  password?: string
+import {RouteVars} from "@/core/store";
 
-}
-
-export async function getFileListInfo(queries: requestQuery): Promise<response> {
-  const params: requestQuery = {
-    path: queries.path as string,
+export async function getFileListInfo(queries: RouteVars): Promise<response> {
+  console.log('---QUERY---')
+  const params: RouteVars = {} as RouteVars
+  if (queries.client) {
+    params['client'] = queries.client
+  }
+  if (queries.account) {
+    params['account'] = queries.account
   }
   if (queries.drive) {
     params['drive'] = queries.drive
   }
+  if (queries.path) {
+    params['path'] = queries.path
+  }
   if (queries.password) {
     await sha1(queries.password).then((hash: string) => {
-      console.log(hash, queries.password, 'pas')
       params['password'] = hash
     })
+  }
+  if (queries.sort_by) {
+    params['sort_by'] = queries.sort_by
+  }
+  if (queries.asc) {
+    params['asc'] = queries.asc
+  }
+  if (queries.page_size) {
+    params['page_size'] = queries.page_size
+  }
+  if (queries.page_index) {
+    params['page_index'] = queries.page_index
   }
   return req.get('api/azure/file', {
     params,

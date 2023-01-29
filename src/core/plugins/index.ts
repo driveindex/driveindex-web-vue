@@ -10,7 +10,7 @@ import vuetify from './vuetify'
 import router from '../router'
 import VueLogger from 'vuejs3-logger'
 import {LoggerOption} from "@/core/plugins/vuejs3-logger";
-
+import pinia from "@/core/plugins/pinia";
 // Types
 import type { App } from 'vue'
 
@@ -20,4 +20,5 @@ export function registerPlugins (app: App) {
     .use(vuetify)
     .use(router)
     .use(VueLogger, LoggerOption)
+    .use(pinia)
 }

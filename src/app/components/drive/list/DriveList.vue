@@ -8,22 +8,7 @@
         </div>
       </v-card>
     </v-col>
-    <v-card class="password-card" v-if="showPasswordInput">
-      <div class="password-box">
-        <v-icon icon="mdi-lock"></v-icon>
-        This file is password-protected.
-        <v-text-field
-          class="password-input"
-          v-model="password"
-          :rules="[(v) => !!v || 'Password is required']"
-          label="Password"
-          :type="showPassword ? 'text' : 'password'"
-          :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          @click:append-inner="showPassword = !showPassword"
-        ></v-text-field>
-        <v-btn @click.prevent="submitPassword">submit</v-btn>
-      </div>
-    </v-card>
+    <PasswordInput class="password-card" v-if="showPasswordInput"/>
     <v-col
       v-else
       class="v-col-12"
@@ -52,20 +37,26 @@
 import {computed, ref} from "vue";
 import {FileListInfo} from "@/core/requests/APIs";
 import {CanonicalPath} from "@/core/util/CanonicalPath";
+import {useStore} from "@/core/store";
+import {useRouter} from "vue-router";
+
+const store = useStore()
+const router = useRouter()
+const routeVars = ref(store.routeVars)
 
 const props = defineProps<{
-  queryPath: string,
   fileList: FileListInfo,
   loadCard: boolean
 }>()
 
-const displayList = computed(() => {
-  return props.fileList.data.content == undefined ? [] : props.fileList.data.content
+let displayList = computed(() => {
+  return props.fileList.data.content
 })
+
 
 // Check if there is parent directory.
 const hasParentDirectory = computed(() => {
-  return !new CanonicalPath(props.queryPath).isRoot()
+  return !new CanonicalPath(routeVars.value.path).isRoot()
 })
 
 // Determine icon.
@@ -80,17 +71,15 @@ function determineIcon(mineType: string): string {
 
 // Format tools.
 import {sizeFormat, timeFormat} from "@/core/util/FileDetailParser";
+import PasswordInput from "@/app/components/drive/list/PasswordInput.vue";
 
 // Route back to parent directory.
-import {useRouter} from "vue-router";
-
-const router = useRouter()
 
 function toParentPath() {
   router.push({
     path: router.currentRoute.value.path,
     query: {
-      path: new CanonicalPath(props.queryPath).getParentPath()
+      path: new CanonicalPath(routeVars.value.path).getParentPath()
     }
   })
 }
@@ -98,20 +87,20 @@ function toParentPath() {
 // Direct to clicked item.
 function direct(name: string) {
   console.log(name, 'direct')
+
   router.push({
     path: router.currentRoute.value.path,
     query: {
-      path: new CanonicalPath(props.queryPath).toChildrenPath(name)
+      path: new CanonicalPath(routeVars.value.path).toChildrenPath(name),
+      password: routeVars.value.password
     }
   })
 }
 
-// Password-protected file.
-const showPassword = ref(false)
+// Show password input.
 const showPasswordInput = computed(() => {
   return props.fileList.code == -4001
 })
-const password = ref('')
 </script>
 
 <style scoped>
@@ -134,6 +123,17 @@ const password = ref('')
 
 .detail-item {
   margin: 0 5px;
+}
+
+.password-card {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 20px;
+  margin: 5px;
+  height: 500px;
 }
 
 @media (max-width: 600px) {
