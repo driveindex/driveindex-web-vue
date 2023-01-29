@@ -15,20 +15,7 @@
       v-for="item in displayList"
       :key="item.name"
     >
-      <v-card class="file-info-card" @click="direct(item.name)">
-        <div>
-          <v-icon :icon="determineIcon(item.mine_type)"></v-icon>
-          {{ item.name }}
-        </div>
-        <div class="file-detail file-details-hide">
-          <div class="detail-item">
-            {{ timeFormat(item.info.modified_time) }}
-          </div>
-          <div class="detail-item">
-            {{ sizeFormat(item.info.size) }}
-          </div>
-        </div>
-      </v-card>
+      <DriveListItem :item="item"/>
     </v-col>
   </v-row>
 </template>
@@ -59,19 +46,8 @@ const hasParentDirectory = computed(() => {
   return !new CanonicalPath(routeVars.value.path).isRoot()
 })
 
-// Determine icon.
-function determineIcon(mineType: string): string {
-  if (mineType == 'directory') {
-    return 'mdi-folder'
-  } else if (mineType == 'application/zip') {
-    return 'mdi-zip-box'
-  }
-  return 'mdi-file'
-}
-
-// Format tools.
-import {sizeFormat, timeFormat} from "@/core/util/FileDetailParser";
 import PasswordInput from "@/app/components/drive/list/PasswordInput.vue";
+import DriveListItem from "@/app/components/drive/list/FileListItem.vue";
 
 // Route back to parent directory.
 
@@ -80,19 +56,6 @@ function toParentPath() {
     path: router.currentRoute.value.path,
     query: {
       path: new CanonicalPath(routeVars.value.path).getParentPath()
-    }
-  })
-}
-
-// Direct to clicked item.
-function direct(name: string) {
-  console.log(name, 'direct')
-
-  router.push({
-    path: router.currentRoute.value.path,
-    query: {
-      path: new CanonicalPath(routeVars.value.path).toChildrenPath(name),
-      password: routeVars.value.password
     }
   })
 }
@@ -113,18 +76,6 @@ const showPasswordInput = computed(() => {
   align-items: center;
 }
 
-.file-detail {
-  position: absolute;
-  right: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.detail-item {
-  margin: 0 5px;
-}
-
 .password-card {
   width: 100%;
   display: flex;
@@ -134,11 +85,5 @@ const showPasswordInput = computed(() => {
   font-size: 20px;
   margin: 5px;
   height: 500px;
-}
-
-@media (max-width: 600px) {
-  .file-details-hide {
-    display: none;
-  }
 }
 </style>

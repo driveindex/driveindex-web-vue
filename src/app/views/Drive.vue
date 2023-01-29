@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import DriveList from "@/app/components/drive/list/DriveList.vue";
+import DriveList from "@/app/components/drive/list/FileList.vue";
 import {CanonicalPath} from "@/core/util/CanonicalPath";
 import {useRoute} from "vue-router";
 import {computed, reactive, Ref, ref} from "vue";
