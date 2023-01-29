@@ -8,10 +8,26 @@
         </div>
       </v-card>
     </v-col>
-
+    <v-card class="password-card" v-if="showPasswordInput">
+      <div class="password-box">
+        <v-icon icon="mdi-lock"></v-icon>
+        This file is password-protected.
+        <v-text-field
+          class="password-input"
+          v-model="password"
+          :rules="[(v) => !!v || 'Password is required']"
+          label="Password"
+          :type="showPassword ? 'text' : 'password'"
+          :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append-inner="showPassword = !showPassword"
+        ></v-text-field>
+        <v-btn @click.prevent="submitPassword">submit</v-btn>
+      </div>
+    </v-card>
     <v-col
+      v-else
       class="v-col-12"
-      v-for="item in fileList"
+      v-for="item in displayList"
       :key="item.name"
     >
       <v-card class="file-info-card" @click="direct(item.name)">
@@ -33,15 +49,19 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {ContentItem} from "@/core/requests/APIs";
+import {computed, ref} from "vue";
+import {FileListInfo} from "@/core/requests/APIs";
 import {CanonicalPath} from "@/core/util/CanonicalPath";
 
 const props = defineProps<{
   queryPath: string,
-  fileList: Array<ContentItem>
+  fileList: FileListInfo,
   loadCard: boolean
 }>()
+
+const displayList = computed(() => {
+  return props.fileList.data.content == undefined ? [] : props.fileList.data.content
+})
 
 // Check if there is parent directory.
 const hasParentDirectory = computed(() => {
@@ -85,6 +105,13 @@ function direct(name: string) {
     }
   })
 }
+
+// Password-protected file.
+const showPassword = ref(false)
+const showPasswordInput = computed(() => {
+  return props.fileList.code == -4001
+})
+const password = ref('')
 </script>
 
 <style scoped>

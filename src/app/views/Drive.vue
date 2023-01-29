@@ -16,7 +16,7 @@
     </v-row>
     <v-card class="file-list-card" :loading="loadCard">
       <DriveList :fileList="fileList"
-                 :query-path="queryPath"
+                 :query-path="routeVars.path"
                  :load-card="loadCard"
       />
       <v-row class="row-center empty-list" no-gutters
@@ -36,54 +36,59 @@ import {useRoute} from "vue-router";
 import {computed, reactive, Ref, ref, watch, watchEffect} from "vue";
 
 const route = reactive(useRoute())
-let queryPath = ref(route.query.path as string)
+let routeVars = ref({} as requestQuery)
 
-// Update queryPath when route changes.
-watch(route, (newValue) => {
-  queryPath.value = newValue.query.path as string
-}, {deep: true})
+// Update routeVars when route changes.
+watchEffect(() => {
+  routeVars.value.path = route.query.path as string
+  routeVars.value.drive = route.params.drive.toString()
+})
 
 
 // Path.
 let path = computed(() => {
-  if (queryPath.value == null) {
+  if (routeVars.value.path == null) {
     return ['Invalid path']
   }
-  const pathArray = ref(new CanonicalPath(queryPath.value).toBreadcrumbItems())
+  const pathArray = ref(new CanonicalPath(routeVars.value.path).toBreadcrumbItems())
   for (const obj of pathArray.value) {
     obj.to = route.path + "?path=" + obj.to
   }
-  console.log(pathArray.value)
   return pathArray.value
 })
 
 // File list.
 // If the return value mine_type is not a directory, display the file.
-import {getFileListInfo, FileListInfo, ContentItem, FileData} from "@/core/requests/APIs";
+import {getFileListInfo, FileListInfo, ContentItem, FileData, requestQuery} from "@/core/requests/APIs";
 import DriveFile from "@/app/components/drive/file/DriveFile.vue";
 
-const fileList = ref(Array<ContentItem>())
+const fileList = ref({} as FileListInfo)
 const fileData = ref({} as FileData)
 const showFile: Ref<boolean> = ref(false)
 const loadCard = ref(true)
 watchEffect(async () => {
   loadCard.value = true
-  fileList.value = []
+  fileList.value = {} as FileListInfo
   fileData.value = {} as FileData
   showFile.value = false
-  await getFileListInfo(queryPath.value).then((response) => {
+  await getFileListInfo(routeVars.value).then((response) => {
     console.log(response, 'response')
+    if(response.code === -4001) {
+      fileList.value = response as FileListInfo
+      return
+    }
     if (response.data.mine_type  == "directory") {
-      fileList.value = response.data.content as Array<ContentItem>
+      fileList.value = response as FileListInfo
     } else {
       showFile.value = true
       fileData.value = response as FileData
       console.log(response)
     }
-    loadCard.value = false
   }).catch((error) => {
     // todo: handle possible error
     console.log(error)
+  }).finally(() => {
+    loadCard.value = false
   })
 })
 

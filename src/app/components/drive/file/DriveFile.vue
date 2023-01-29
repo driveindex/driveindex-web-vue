@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import {FileData} from "@/core/requests/APIs";
-import {computed, reactive, ref} from "vue";
+import {FileData, getFileListInfo, requestQuery} from "@/core/requests/APIs";
+import {reactive, ref, watchEffect} from "vue";
 import {baseURL} from "@/core/requests";
 import {useRoute} from "vue-router";
 
@@ -33,20 +33,34 @@ const props = defineProps<{
   fileData: FileData
 }>()
 
-const data = computed(() => {
-  return props.fileData.data
-})
+const data = ref(props.fileData)
+
+
+
 
 const route = reactive(useRoute())
-let queryPath = ref(route.query.path as string)
+let routeVars = ref({} as requestQuery)
+
+// Update routeVars when route changes.
+watchEffect(() => {
+  routeVars.value.path = route.query.path as string
+  routeVars.value.drive = route.params.drive.toString()
+  routeVars.value.password = password.value
+})
+function submitPassword(){
+  getFileListInfo(routeVars.value).then((res) => {
+    data.value = res.data
+    console.log(res)
+  })
+}
 function download() {
-  window.open(baseURL + '/download?path=' + queryPath.value)
+  window.open(baseURL + '/download?path=' + routeVars.value)
 }
 
 // Copy to clipboard.
 function copyToClipboard() {
   const el = document.createElement('textarea');
-  el.value = baseURL + '/download?path=' + queryPath.value;
+  el.value = baseURL + '/download?path=' + routeVars.value;
   document.body.appendChild(el);
   el.select();
   document.execCommand('copy');
@@ -79,5 +93,27 @@ function copyToClipboard() {
   align-items: center;
   flex-direction: column;
   font-size: 20px;
+}
+
+.password-card{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 20px;
+  padding: 10px;
+  height: 500px;
+}
+
+.password-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 20px;
+}
+
+.password-input{
+  width: 100%;
 }
 </style>
