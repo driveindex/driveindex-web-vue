@@ -33,7 +33,7 @@ const store = useStore()
 const props = defineProps<{
   fileData: FileData
 }>()
-console.log(props.fileData, 'fileData')
+
 const data = ref(props.fileData.data)
 
 let routeVars = ref(store.routeVars)

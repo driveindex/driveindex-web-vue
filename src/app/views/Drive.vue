@@ -104,6 +104,7 @@ store.$subscribe(async (mutation, state) => {
   } as FileListInfo
   fileData.value = {} as FileData
   showFile.value = false
+  show404.value = false
   await requestInfo()
 })
 
