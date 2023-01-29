@@ -17,6 +17,8 @@
     >
       <DriveListItem :item="item"/>
     </v-col>
+    <FileListPager v-if="totalPage > 1" :total-count="totalCount" :total-page="totalPage"/>
+
   </v-row>
 </template>
 
@@ -26,15 +28,18 @@ import {FileListInfo} from "@/core/requests/APIs";
 import {CanonicalPath} from "@/core/util/CanonicalPath";
 import {useStore} from "@/core/store";
 import {useRouter} from "vue-router";
-
-const store = useStore()
-const router = useRouter()
-const routeVars = ref(store.routeVars)
+import PasswordInput from "@/app/components/drive/list/components/PasswordInput.vue";
+import DriveListItem from "@/app/components/drive/list/components/FileListItem.vue";
+import FileListPager from "@/app/components/drive/list/components/FileListPager.vue";
 
 const props = defineProps<{
   fileList: FileListInfo,
   loadCard: boolean
 }>()
+const store = useStore()
+const router = useRouter()
+const routeVars = ref(store.routeVars)
+
 
 let displayList = computed(() => {
   return props.fileList.data.content
@@ -45,9 +50,6 @@ let displayList = computed(() => {
 const hasParentDirectory = computed(() => {
   return !new CanonicalPath(routeVars.value.path).isRoot()
 })
-
-import PasswordInput from "@/app/components/drive/list/PasswordInput.vue";
-import DriveListItem from "@/app/components/drive/list/FileListItem.vue";
 
 // Route back to parent directory.
 
@@ -63,6 +65,17 @@ function toParentPath() {
 // Show password input.
 const showPasswordInput = computed(() => {
   return props.fileList.code == -4001
+})
+
+const totalPage = computed(() => {
+  if (props.fileList.data.total_page == undefined) {
+    return 1
+  }
+  return props.fileList.data.total_page ? props.fileList.data.total_page : 1
+})
+
+const totalCount = computed(() => {
+  return props.fileList.data.total_count ? props.fileList.data.total_count : 0
 })
 </script>
 

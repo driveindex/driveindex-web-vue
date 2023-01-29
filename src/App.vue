@@ -9,7 +9,10 @@ import {useStore} from "@/core/store";
 
 const route = reactive(useRoute())
 const store = useStore()
+
 watch(route, () => {
+  const page_size = route.query.page_size == null ? '20': route.query.page_size
+  const page_index = route.query.page_index == null ? '1': route.query.page_index
   store.$patch({
     routeVars: {
       client: route.params.client.toString(),
@@ -19,8 +22,8 @@ watch(route, () => {
       password: route.query.password as string,
       sort_by: route.query.sort_by as string,
       asc: route.query.asc as string,
-      page_size: route.query.page_size as string,
-      page_index: route.query.page_index as string,
+      page_size: page_size as string,
+      page_index: page_index as string,
     }
   })
 })

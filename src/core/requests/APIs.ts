@@ -1,5 +1,6 @@
 import req from "@/core/requests/index";
 import {sha1} from "hash-wasm";
+import {RouteVars} from "@/core/store";
 
 
 export interface response {
@@ -66,10 +67,7 @@ export interface ContentItem {
   }
 }
 
-import {RouteVars} from "@/core/store";
-
 export async function getFileListInfo(queries: RouteVars): Promise<response> {
-  console.log('---QUERY---')
   const params: RouteVars = {} as RouteVars
   if (queries.client) {
     params['client'] = queries.client

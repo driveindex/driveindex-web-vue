@@ -15,15 +15,15 @@
       </v-card>
     </v-row>
     <v-card class="file-list-card" :loading="loadCard">
-      <DriveList :fileList="fileList"
-                 :loadCard="loadCard"
+      <DriveList :file-list="fileList"
+                 :load-card="loadCard"
       />
       <v-row class="row-center empty-list" no-gutters
              v-if="show404 && !loadCard">
         <v-icon icon="mdi-cloud-question" style="font-size: 50px"></v-icon>
         <div>OOPS, No result found with given path</div>
       </v-row>
-      <DriveFile v-if="showFile" :fileData="fileData"/>
+      <DriveFile v-if="showFile" :file-data="fileData"/>
     </v-card>
   </v-container>
 </template>
@@ -34,11 +34,15 @@ import {CanonicalPath} from "@/core/util/CanonicalPath";
 import {useRoute} from "vue-router";
 import {computed, reactive, Ref, ref} from "vue";
 import {useStore} from "@/core/store";
+// File list.
+// If the return value mine_type is not a directory, display the file.
+import {ContentItem, FileData, FileListInfo, getFileListInfo} from "@/core/requests/APIs";
+import DriveFile from "@/app/components/drive/file/DriveFile.vue";
 
 const store = useStore()
 const route = reactive(useRoute())
 let routeVars = ref(store.routeVars)
-
+console.log(routeVars.value, 'routeVars.value init')
 // Path.
 let path = computed(() => {
   if (routeVars.value.path == null) {
@@ -50,11 +54,6 @@ let path = computed(() => {
   }
   return pathArray.value
 })
-
-// File list.
-// If the return value mine_type is not a directory, display the file.
-import {getFileListInfo, FileListInfo, FileData, ContentItem} from "@/core/requests/APIs";
-import DriveFile from "@/app/components/drive/file/DriveFile.vue";
 
 const fileList = ref({
   data: {
@@ -68,12 +67,12 @@ const loadCard = ref(true)
 
 async function requestInfo() {
   await getFileListInfo(routeVars.value).then((response) => {
-    console.log(response, 'response')
-    if (response.code === -4001) {
+    console.log(routeVars.value, 'routeVars.value')
+    if (response.code == -4001) {
       fileList.value = response as FileListInfo
       return
     }
-    if (response.code === -4002) {
+    if (response.code == -4002 || response.code == -404) {
       show404.value = true
       return
     }
@@ -93,9 +92,8 @@ async function requestInfo() {
   })
 }
 
-const rPath = ref(routeVars.value.path)
 requestInfo()
-store.$subscribe(async (mutation, state) => {
+store.$subscribe(async () => {
   loadCard.value = true
   fileList.value = {
     data: {
