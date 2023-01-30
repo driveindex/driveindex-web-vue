@@ -4,7 +4,7 @@ import zh from './lang/zh-cn.json'
 const i18n = createI18n({
   legacy: false,
   globalInjection: true,
-  locale: localStorage.getItem('locale') || 'zh',
+  locale: sessionStorage.getItem('locale') || 'zh',
   messages: {
     zh,
   }

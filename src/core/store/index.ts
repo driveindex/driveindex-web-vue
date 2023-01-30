@@ -29,5 +29,6 @@ export const useStore = defineStore('store',{
       page_size: '1',
       page_index: '20',
     } as RouteVars,
+    language: 'zh',
   })
 })

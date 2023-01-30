@@ -104,3 +104,20 @@ export async function getFileListInfo(queries: RouteVars): Promise<response> {
     return res.data
   })
 }
+
+// export async function getLanguage(): Promise<response> {
+//   return req.get('api/language').then(res => {
+//     return res.data
+//   })
+// }
+// test
+export async function getLanguage(): Promise<response> {
+  console.log('getLanguage')
+  return Promise.resolve({
+    code: 200,
+    message: 'success',
+    data: {
+      language: 'en',
+    }
+  })
+}
