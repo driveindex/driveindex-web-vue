@@ -8,8 +8,8 @@
             {{ data.name }}
           </div>
           <div>
-            <v-btn variant="flat" @click.prevent="copyToClipboard">Copy Download Link</v-btn>
-            <v-btn @click.prevent="download">Download</v-btn>
+            <v-btn variant="flat" @click.prevent="copyToClipboard">{{ t('copyLink') }}</v-btn>
+            <v-btn @click.prevent="download">{{ t('downloadBtn') }}</v-btn>
           </div>
         </v-card-title>
         <v-card-text class="file-card-main">
@@ -23,12 +23,14 @@
   </v-row>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {FileData} from "@/core/requests/APIs";
 import {ref} from "vue";
 import {baseURL} from "@/core/requests/";
 import {useStore} from "@/core/store";
+import {useI18n} from "vue-i18n";
 
+const {t} = useI18n()
 const store = useStore()
 const props = defineProps<{
   fileData: FileData

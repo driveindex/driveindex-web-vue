@@ -37,7 +37,7 @@ import {useStore} from "@/core/store";
 // File list.
 // If the return value mine_type is not a directory, display the file.
 import {ContentItem, FileData, FileListInfo, getFileListInfo} from "@/core/requests/APIs";
-import DriveFile from "@/app/components/drive/file/DriveFile.vue";
+import DriveFile from "@/app/components/drive/file/FileDetail.vue";
 
 const store = useStore()
 const route = reactive(useRoute())

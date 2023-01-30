@@ -11,6 +11,7 @@ import router from '../router'
 import VueLogger from 'vuejs3-logger'
 import {LoggerOption} from "@/core/plugins/vuejs3-logger";
 import pinia from "@/core/plugins/pinia";
+import i18n from "@/core/i18n";
 // Types
 import type { App } from 'vue'
 
@@ -21,4 +22,5 @@ export function registerPlugins (app: App) {
     .use(router)
     .use(VueLogger, LoggerOption)
     .use(pinia)
+    .use(i18n)
 }

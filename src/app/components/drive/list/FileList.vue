@@ -68,13 +68,12 @@ const showPasswordInput = computed(() => {
 })
 
 const totalPage = computed(() => {
-  if (props.fileList.data.total_page == undefined) {
-    return 1
-  }
+  if (props.fileList.code != 200) return 0
   return props.fileList.data.total_page ? props.fileList.data.total_page : 1
 })
 
 const totalCount = computed(() => {
+  if (props.fileList.code != 200) return 0
   return props.fileList.data.total_count ? props.fileList.data.total_count : 0
 })
 </script>

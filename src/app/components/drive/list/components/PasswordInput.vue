@@ -2,17 +2,17 @@
   <v-card class="password-card">
     <div class="password-box">
       <v-icon icon="mdi-lock"></v-icon>
-      This entry is password-protected.
+      {{ t('needPassword') }}
       <v-text-field
-        class="password-input"
         v-model="password"
-        :rules="[(v) => !!v || 'Password is required']"
-        label="Password"
-        :type="showPassword ? 'text' : 'password'"
         :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        :rules="[(v) => !!v || 'Password is required']"
+        :type="showPassword ? 'text' : 'password'"
+        class="password-input"
+        :label="t('password')"
         @click:append-inner="showPassword = !showPassword"
       ></v-text-field>
-      <v-btn @click.prevent="submitPassword">submit</v-btn>
+      <v-btn @click.prevent="submitPassword">{{ t('submit') }}</v-btn>
     </div>
   </v-card>
 </template>
@@ -21,7 +21,9 @@
 // Password-protected file.
 import {ref} from "vue";
 import {useStore} from "@/core/store";
+import {useI18n} from "vue-i18n";
 
+const {t} = useI18n()
 const store = useStore()
 const showPassword = ref(false)
 const password = ref('')

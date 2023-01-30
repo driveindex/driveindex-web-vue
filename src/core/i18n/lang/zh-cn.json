@@ -1,0 +1,9 @@
+{
+  "displayItemSelection": "展示{selector}个项目于本页，共计{total}个",
+  "copyLink": "复制下载链接",
+  "downloadBtn": "下载",
+  "show404": "该路径下未找到文件",
+  "needPassword": "该路径受密码保护，请输入密码",
+  "password": "密码",
+  "submit": "提交"
+}

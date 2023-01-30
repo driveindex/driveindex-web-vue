@@ -8,14 +8,20 @@
   </div>
   <v-col class="v-col-8">
     <div class="item-num-selector">
-      <v-select
-        v-model="routeVars.page_size"
-        :items="['20', '50', '100']"
-        class="selector"
-        density="compact"
-        prepend-icon=""
-      ></v-select>
-      Items on Page, Total {{ totalCount }} Items
+      <i18n-t keypath="displayItemSelection">
+        <template v-slot:selector>
+          <v-select
+            v-model="routeVars.page_size"
+            :items="['20', '50', '100']"
+            class="selector"
+            density="compact"
+            prepend-icon=""
+          ></v-select>
+        </template>
+        <template v-slot:total>
+          <span>{{ totalCount }}</span>
+        </template>
+      </i18n-t>
     </div>
   </v-col>
 </template>
@@ -23,6 +29,9 @@
 <script lang="ts" setup>
 import {useStore} from "@/core/store";
 import {ref, watch} from "vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n()
 
 const store = useStore()
 const routeVars = store.routeVars

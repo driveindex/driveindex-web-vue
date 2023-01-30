@@ -1,0 +1,9 @@
+{
+  "displayItemSelection": "Display {selector} items per page，total {total} items",
+  "copyLink": "copy link",
+  "downloadBtn": "download",
+  "show404": "No items found for given entry",
+  "needPassword": "This entry is password-protected. Please enter the password.",
+  "password": "password",
+  "submit": "submit"
+}
