@@ -1,11 +1,10 @@
 <template>
-  <router-view />
+  <div></div>
 </template>
 
-<script>
-export default {
-  name: "Admin"
-}
+<script lang="ts" setup>
+const token = localStorage.token
+
 </script>
 
 <style scoped>

@@ -26,8 +26,8 @@ export const useStore = defineStore('store',{
       password: null,
       sort_by: null,
       asc: null,
-      page_size: '1',
-      page_index: '20',
+      page_size: '20',
+      page_index: '1',
     } as RouteVars,
     language: 'zh',
   })

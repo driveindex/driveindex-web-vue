@@ -121,3 +121,11 @@ export async function getLanguage(): Promise<response> {
     }
   })
 }
+
+export async function adminLogin(password:string): Promise<response> {
+  return req.post('api/login', JSON.stringify({
+    password
+  })).then(res => {
+    return res.data
+  })
+  }

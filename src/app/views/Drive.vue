@@ -6,7 +6,7 @@
         class="rounded-lg card-fill"
       >
         <v-card-actions class="breadcrumb">
-          <v-breadcrumbs :items="path">
+          <v-breadcrumbs :items="path" @click="routeVars.page_index='1'">
             <template v-slot:divider>
               <v-icon icon="mdi-chevron-right"></v-icon>
             </template>

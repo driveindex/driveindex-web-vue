@@ -26,11 +26,11 @@ const routes = [
   },
   // if no valid pattern is matched above, redirect to the main page.
   // todo: the redirect may have problem
-  {
-    path: '/',
-    name: 'index',
-    component: Drive
-  },
+  // {
+  //   path: '/',
+  //   name: 'index',
+  //   component: Drive
+  // },
 ]
 
 const router = createRouter({

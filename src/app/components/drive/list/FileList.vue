@@ -54,6 +54,7 @@ const hasParentDirectory = computed(() => {
 // Route back to parent directory.
 
 function toParentPath() {
+  routeVars.value.page_index = '1'
   router.push({
     path: router.currentRoute.value.path,
     query: {

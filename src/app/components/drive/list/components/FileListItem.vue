@@ -45,6 +45,7 @@ const routeVars = ref(store.routeVars)
 const router = useRouter()
 
 function direct(name: string) {
+  routeVars.value.page_index = '1'
   router.push({
     path: router.currentRoute.value.path,
     query: {
