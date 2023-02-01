@@ -5,5 +5,6 @@
   "show404": "No items found for given entry",
   "needPassword": "This entry is password-protected. Please enter the password.",
   "password": "password",
-  "submit": "submit"
+  "submit": "submit",
+  "login": "Login"
 }

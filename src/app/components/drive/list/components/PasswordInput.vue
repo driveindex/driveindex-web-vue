@@ -11,7 +11,7 @@
         class="password-input"
         :label="t('password')"
         @click:append-inner="showPassword = !showPassword"
-      ></v-text-field>
+      />
       <v-btn @click.prevent="submitPassword">{{ t('submit') }}</v-btn>
     </div>
   </v-card>
@@ -25,7 +25,7 @@ import {useI18n} from "vue-i18n";
 
 const {t} = useI18n()
 const store = useStore()
-const showPassword = ref(false)
+let showPassword = ref(false)
 const password = ref('')
 
 function submitPassword() {

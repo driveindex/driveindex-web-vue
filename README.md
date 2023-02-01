@@ -32,8 +32,7 @@
 
 ## TODO:
 
-+ [ ] Breadcrumb nav 跳转方式重写 （@click）
-+ [ ] direct重写到util，每次导航完成需要重置store的page_index
++ [ ] ~~direct重写到util，每次导航完成需要重置store的page_index~~
 + [ ] Admin页面：判断是否已经登录，未登录则跳转到登录页面
 + [ ] AdminPanel管理页面
 + [ ] AdminLogin登录页面
