@@ -8,11 +8,11 @@ const routes = [
     children: [
       {
         path: 'login',
-        component: () => import("@/app/components/admin/common/AdminCommon.vue"),
+        component: () => import("@/app/components/admin/AdminLogin.vue"),
       },
       {
         path: 'panel',
-        component: () => import("@/app/components/admin/password/AdminPassword.vue"),
+        component: () => import("@/app/components/admin/AdminPanel.vue"),
       },
     ]
   },

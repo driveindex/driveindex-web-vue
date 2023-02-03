@@ -14,7 +14,7 @@ if(token == undefined) {
   router.push('/admin/login')
 }else{
   checkToken(token).then((res) => {
-    if(res.data.code == 200) {
+    if(res.code == 200) {
       router.push('/admin/panel')
     }else{
       router.push('/admin/login')

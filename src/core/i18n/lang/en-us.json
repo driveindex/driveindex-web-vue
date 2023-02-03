@@ -6,5 +6,5 @@
   "needPassword": "This entry is password-protected. Please enter the password.",
   "password": "password",
   "submit": "submit",
-  "login": "Login"
+  "login": "Admin Login"
 }

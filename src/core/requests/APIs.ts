@@ -130,13 +130,23 @@ export async function adminLogin(password: string): Promise<response> {
   })
 }
 
+// export async function checkToken(token: string): Promise<response> {
+//   return req.get('api/admin/token_state', {
+//     headers: {
+//       "driveindex-authentication": token,
+//       "content-type": "application/json"
+//     }
+//   }).then(res => {
+//     return res.data
+//   })
+// }
+
 export async function checkToken(token: string): Promise<response> {
-  return req.get('api/admin/token_state', {
-    headers: {
-      "driveindex-authentication": token,
-      "content-type": "application/json"
+  return Promise.resolve({
+    code: 200,
+    message: 'success',
+    data: {
+      token: token,
     }
-  }).then(res => {
-    return res.data
   })
 }
