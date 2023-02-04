@@ -9,5 +9,6 @@
   "login": "Admin Login",
   "basicSettings": "Basic Setting",
   "basicSettingsPrompt": "Some basic settings for DriveIndex",
-  "passwordSettings": "Password Setting"
+  "passwordSettings": "Password Setting",
+  "driveManage": "Azure Drive Manage"
 }

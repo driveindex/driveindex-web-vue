@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from "vue";
+import {ref, watchEffect} from "vue";
 import {useI18n} from "vue-i18n";
 import {useRouter} from "vue-router";
 
@@ -49,9 +49,12 @@ let panel = ref([items[0].val])
 function selectPanel(clickItem: any) {
   if (clickItem.length > 0) {
     panel.value[0] = clickItem[0]
-    router.push('/admin/panel/' + clickItem[0])
   }
 }
+
+watchEffect(() => {
+  router.push('/admin/panel/' + panel.value[0])
+})
 </script>
 
 <style scoped>
