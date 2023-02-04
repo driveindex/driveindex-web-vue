@@ -1,6 +1,6 @@
 // Composables
 import {createRouter, createWebHistory} from 'vue-router'
-import Drive from "@/app/views/Drive.vue";
+
 const routes = [
   {
     path: '/admin',
@@ -13,14 +13,24 @@ const routes = [
       {
         path: 'panel',
         component: () => import("@/app/components/admin/AdminPanel.vue"),
+        children: [
+          {
+            path: 'basic',
+            component: () => import("@/app/components/admin/panel/BasicSettings.vue")
+          },
+          {
+            path: 'password',
+            component: () => import("@/app/components/admin/panel/PasswordSettings.vue")
+          }
+        ]
       },
     ]
   },
   {
     path: '/:client/:account/:drive?',
     name: 'main',
-    component: Drive,
-    meta:{
+    component: () => import("@/app/views/Drive.vue"),
+    meta: {
       keepAlive: true
     }
   },

@@ -6,5 +6,7 @@
   "needPassword": "This entry is password-protected. Please enter the password.",
   "password": "password",
   "submit": "submit",
-  "login": "Admin Login"
+  "login": "Admin Login",
+  "basicSettings": "Basic Setting",
+  "passwordSettings": "Password Setting"
 }
