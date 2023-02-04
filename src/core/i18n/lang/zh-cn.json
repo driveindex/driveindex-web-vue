@@ -8,5 +8,6 @@
   "submit": "提交",
   "login": "管理员登录",
   "basicSettings": "基本设置",
+  "basicSettingsPrompt": "调整DriveIndex的基本设置",
   "passwordSettings": "密码设置"
 }

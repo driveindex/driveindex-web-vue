@@ -8,5 +8,6 @@
   "submit": "submit",
   "login": "Admin Login",
   "basicSettings": "Basic Setting",
+  "basicSettingsPrompt": "Some basic settings for DriveIndex",
   "passwordSettings": "Password Setting"
 }

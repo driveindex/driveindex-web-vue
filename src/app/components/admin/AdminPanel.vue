@@ -13,7 +13,7 @@
         v-model="drawer"
         temporary
       >
-        <v-list v-model:selected="panel" nav>
+        <v-list :selected="panel" nav select-strategy="single-independent" @update:selected="selectPanel">
           <v-list-item
             v-for="{val, title} in items"
             :key="val"
@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, watch} from "vue";
+import {ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {useRouter} from "vue-router";
 
@@ -45,10 +45,13 @@ const items = [
   {val: 'password', title: t('passwordSettings')},
 ]
 let panel = ref([items[0].val])
-watch(panel, (val) => {
-  console.log(val)
-  router.push('/admin/panel/'+val[0])
-})
+
+function selectPanel(clickItem: any) {
+  if (clickItem.length > 0) {
+    panel.value[0] = clickItem[0]
+    router.push('/admin/panel/' + clickItem[0])
+  }
+}
 </script>
 
 <style scoped>
