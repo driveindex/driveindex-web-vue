@@ -14,7 +14,7 @@
                 variant="outlined"
                 type="text"
                 v-model="username"
-                :label="t('login.username')"
+                :label="t('auth.username')"
                 required
             ></v-text-field>
           </v-row>
@@ -23,7 +23,7 @@
                 variant="outlined"
                 type="password"
                 v-model="password"
-                :label="t('login.password')"
+                :label="t('auth.password')"
                 required
             ></v-text-field>
           </v-row>
@@ -35,7 +35,7 @@
                 block
                 :loading="loading"
             >
-              {{ t('login.submit') }}
+              {{ t('auth.submit') }}
             </v-btn>
             <v-alert
                 v-if="error"
@@ -56,13 +56,14 @@
 import {useI18n} from "vue-i18n";
 import {ref} from "vue";
 import {loginTokenGetter} from "../core/api/auth.ts";
+import {useRequest} from "alova";
+import {useRouter} from "vue-router";
+import {useAuthStore} from "../core/store/store.ts";
 
 const {t} = useI18n()
 
 let username = ref('')
 let password = ref('')
-
-import {useRequest} from "alova";
 
 let {
   loading,
@@ -73,18 +74,21 @@ let {
   immediate: false,
 })
 
-import {useRouter} from "vue-router";
 const router = useRouter()
+
+const authStore = useAuthStore()
+
 function submitCredential() {
   send().then(result => {
     const {data} = result
     const {token, role} = data.auth
     const {username, nick} = data
     localStorage.setItem('token', token)
-    router.push({path: '/'})
+    authStore.token = token
+    router.push({name: 'client'})
 
   }).catch(() => {
-    error = ref(Error(t('login.error')))
+    error = ref(Error(t('auth.error')))
   })
 }
 </script>

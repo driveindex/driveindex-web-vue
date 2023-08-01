@@ -21,8 +21,7 @@ import router from "./core/router";
 import i18n from "./core/i18n";
 
 // Pinia
-import {createPinia} from "pinia";
-const pinia = createPinia()
+import pinia from "./core/store";
 
 createApp(App)
     .use(vuetify)

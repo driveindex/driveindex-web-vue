@@ -1,4 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router"
+import {useAuthStore} from "../store/store.ts";
+import pinia from "../store";
 
 const routes = [
     {
@@ -7,7 +9,17 @@ const routes = [
         component: () => import("../../views/Main.vue"),
         meta: {
             requiresAuth: true,
-        }
+        },
+        children: [
+            {
+                path: '/client',
+                name: 'client',
+                component: () => import("../../components/client/ClientList.vue"),
+                meta: {
+                    requiresAuth: true,
+                }
+            }
+        ]
     },
     {
         path: '/login',
@@ -18,15 +30,15 @@ const routes = [
         }
     },
     {
-        path:'/test',
-        component: () => import("../../components/MSAL.vue"),
+        path: '/test',
+        component: () => import("../../components/msal/MSAL.vue"),
         meta: {
             requiresAuth: true,
         }
     },
     {
-        path:'/msal-confirm',
-        component: () => import("../../views/MSALConfirm.vue"),
+        path: '/msal-confirm',
+        component: () => import("../../components/msal/MSALConfirm.vue"),
         meta: {
             requiresAuth: true,
         }
@@ -36,11 +48,13 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL), routes,
 })
 
+const authStore = useAuthStore(pinia)
 // todo: Global Guards
 router.beforeEach((to, _from, next) => {
-    const token = localStorage.getItem('token')
+    const token = authStore.isLogin
+
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (token) {
+        if (token && !authStore.isOutdated) {
             next()
         } else {
             next({name: 'login'})
