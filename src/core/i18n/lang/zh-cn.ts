@@ -20,6 +20,8 @@ export default {
         save: "保存",
         delete: "删除",
         newClient: "新的客户端",
+        newClientSecret: "新的客户端密钥",
+        modifyClientSecret: "在这里修改客户端密钥"
     }
 
 }

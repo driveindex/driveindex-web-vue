@@ -49,12 +49,19 @@ import {useI18n} from "vue-i18n";
 
 const {t} = useI18n()
 
-const {loading, data, error} = useRequest(() => clientListGetter(), {
+const {loading, data, error, onSuccess} = useRequest(() => clientListGetter(), {
   initialData: ref([]),
   immediate: true,
 })
 
 const clients = ref(data)
+
+// Add a display id for each client
+onSuccess(event => {
+  for (let i = 0; i < clients.value.data.length; i++) {
+    clients.value.data[i].new = false
+  }
+})
 
 function addClient() {
   clients.value.data.push({
@@ -70,9 +77,6 @@ function addClient() {
     },
     new: true
   })
-}
-
-function saveConfig(){
 }
 
 </script>

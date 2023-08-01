@@ -46,6 +46,15 @@
               hide-details="auto"
               variant="outlined"
           />
+          <v-text-field
+              class="inputGroup"
+              v-model="client['detail']['client_secret']"
+              label="Client Secret"
+              :placeholder="placeholder"
+              hide-details="auto"
+              variant="outlined"
+              required
+          />
         </div>
       </v-col>
       <v-col cols="3" align-self="center" id="btnGroup">
@@ -53,6 +62,8 @@
             class="clientPanelButton"
             color="success"
             prepend-icon="mdi-content-save"
+            @click="saveConfig()"
+            :loading="saveLoading || modifyLoading"
             variant="tonal">{{ t('client.save') }}
         </v-btn>
         <v-btn
@@ -67,13 +78,13 @@
 </template>
 
 <script setup lang="ts">
-
-import {PropType} from "vue";
 import {useI18n} from "vue-i18n";
+import {useRequest} from "alova";
+import {clientCreator, clientModifier, ModifiedClientInfo, NewClientInfo} from "../../core/api/client.ts";
 
 const {t} = useI18n()
 
-interface client {
+interface Client {
   id: string,
   name: string,
   type: string,
@@ -81,17 +92,73 @@ interface client {
   modify_at: string,
   detail: {
     client_id: string,
+    client_secret: string,
     tenant_id: string,
     end_point: string,
-  }
+  },
+  new: boolean
 }
 
-const props = defineProps({
-  client: {
-    type: Object as PropType<client>,
-    required: true
-  }
+const props = defineProps<{
+  client: Client
+}>()
+
+let placeholder: string
+if (props.client.new) {
+  // New client
+  placeholder = t('client.newClientSecret')
+} else {
+  // Modified client
+  placeholder = t('client.modifyClientSecret')
+}
+
+const {
+  data: saveData,
+  loading: saveLoading,
+  error: saveError,
+  send: saveSend
+} = useRequest((d: NewClientInfo) => clientCreator(d), {
+  immediate: false
 })
+
+
+const {
+  data: modifyData,
+  loading: modifyLoading,
+  error: modifyError,
+  send: modifySend
+} = useRequest((d: ModifiedClientInfo) => clientModifier(d), {
+  immediate: false
+})
+
+function saveConfig() {
+  if (props.client.new) {
+    const newClient: NewClientInfo = {
+      name: props.client.name,
+      type: props.client.type,
+      data: {
+        azure_client_id: props.client.detail.client_id,
+        azure_client_secret: props.client.detail.client_secret,
+        tenant_id: props.client.detail.tenant_id,
+      }
+    }
+    saveSend(newClient).then((result) => {
+      console.log(result)
+    })
+  } else {
+    const modifyClient: ModifiedClientInfo = {
+      client_id: props.client.id,
+      client_type: props.client.type,
+      data: {
+        client_secret: props.client.detail.client_secret,
+        name: props.client.name,
+      }
+    }
+    modifySend(modifyClient).then((result) => {
+      console.log(result)
+    })
+  }
+}
 
 </script>
 
