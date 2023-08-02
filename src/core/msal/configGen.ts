@@ -1,6 +1,6 @@
 import {LogLevel, PublicClientApplication} from "@azure/msal-browser";
 
-type options = {
+interface Options {
     clientId: string,
     authority_area: 'global' | 'cn' | 'us_gov',
     redirectUri: string,
@@ -13,7 +13,7 @@ const authority_url = {
     us_gov: 'https://login.microsoftonline.us/common',
 }
 
-function createMSALConfig(options: options) {
+function createMSALConfig(options: Options) {
     return {
         auth: {
             clientId: options.clientId,

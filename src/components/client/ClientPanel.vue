@@ -77,7 +77,8 @@
           color="primary"
           prepend-icon="mdi-microsoft-azure"
           variant="tonal"
-        >{{t('client.account')}}
+          @click="userManagement()"
+        >{{t('client.accountManagement')}}
 
         </v-btn>
       </v-col>
@@ -93,7 +94,7 @@ import {useRouter} from "vue-router";
 
 const {t} = useI18n()
 
-interface Client {
+export interface Client {
   id: string,
   name: string,
   type: string,
@@ -105,7 +106,8 @@ interface Client {
     tenant_id: string,
     end_point: string,
   },
-  new: boolean
+  new: boolean,
+  user_manage: boolean
 }
 
 const props = defineProps<{
@@ -158,6 +160,7 @@ function saveConfig() {
     }).finally(() => {
       router.go(0)
     })
+
   } else {
     const modifyClient: ModifiedClientInfo = {
       client_id: props.client.id,
@@ -173,7 +176,10 @@ function saveConfig() {
       router.go(0)
     })
   }
+}
 
+function userManagement(){
+  props.client.user_manage = true
 }
 
 </script>

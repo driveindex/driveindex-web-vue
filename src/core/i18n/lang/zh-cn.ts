@@ -23,7 +23,9 @@ export default {
         newClient: "新的客户端",
         newClientSecret: "新的客户端密钥",
         modifyClientSecret: "在这里修改客户端密钥",
-        account: "用户管理"
+        accountManagement: "用户管理",
+        clientManagement: "客户端管理",
+        addAccount: "添加用户",
     }
 
 }
