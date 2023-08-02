@@ -1,8 +1,8 @@
 import {LogLevel, PublicClientApplication} from "@azure/msal-browser";
 
-interface Options {
+export interface Options {
     clientId: string,
-    authority_area: 'global' | 'cn' | 'us_gov',
+    authority_area: 'cn' | 'global' | 'us_gov',
     redirectUri: string,
     postLogoutRedirectUri: string,
 }
@@ -53,11 +53,11 @@ function createMSALConfig(options: Options) {
     }
 }
 
-function createMSALInstance(config: any) {
+function createMSALInstance(option: Options) {
+    const config = createMSALConfig(option)
     return new PublicClientApplication(config)
 }
 
 export {
-    createMSALConfig,
     createMSALInstance
 }

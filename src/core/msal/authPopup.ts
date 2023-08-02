@@ -1,31 +1,21 @@
 import * as msal from "@azure/msal-browser";
-import {createMSALConfig, createMSALInstance} from "./configGen.ts";
-
-const config = createMSALConfig({
-    clientId: '78f0895e-e1e5-4363-8fde-38d3ad168a03',
-    authority_area: 'global',
-    redirectUri: 'http://localhost:5173/msal-confirm',
-    postLogoutRedirectUri: 'http://localhost:5173/logout'
-})
-
-const myMSALObj = await createMSALInstance(config)
 
 let username = '';
 
-function selectAccount() {
-    const currentAccounts = myMSALObj.getAllAccounts();
-    if (currentAccounts.length === 0) {
-        return;
-    } else if (currentAccounts.length > 1) {
-        // Add choose account code here
-        console.warn("Multiple accounts detected.");
-    } else if (currentAccounts.length === 1) {
-        username = currentAccounts[0].username;
-        // showWelcomeMessage(username);
-    }
-}
-async function signIn() {
+// function selectAccount(myMSALObj: any) {
+//     const currentAccounts = myMSALObj.getAllAccounts();
+//     if (currentAccounts.length === 0) {
+//         return;
+//     } else if (currentAccounts.length > 1) {
+//         // Add choose account code here
+//         console.warn("Multiple accounts detected.");
+//     } else if (currentAccounts.length === 1) {
+//         username = currentAccounts[0].username;
+//         // showWelcomeMessage(username);
+//     }
+// }
 
+async function signIn(myMSALObj: msal.PublicClientApplication) {
     /**
      * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
@@ -39,17 +29,17 @@ async function signIn() {
         username = response.account.username;
         // showWelcomeMessage(username);
     }).catch((error: any) => {
-        console.log('error',error);
+        console.log('error', error);
     })
 }
 
-function signOut() {
+function signOut(myMSALObj: msal.PublicClientApplication) {
 
     /**
      * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
      */
-
+    const config = myMSALObj.getConfiguration()
     const logoutRequest = {
         account: myMSALObj.getAccountByUsername(username),
         postLogoutRedirectUri: config.auth.redirectUri,
@@ -59,7 +49,7 @@ function signOut() {
     myMSALObj.logoutPopup(logoutRequest);
 }
 
-function getTokenPopup(request: any) {
+function getTokenPopup(request: any, myMSALObj: msal.PublicClientApplication) {
 
     /**
      * See here for more info on account retrieval:
@@ -84,8 +74,5 @@ function getTokenPopup(request: any) {
             }
         });
 }
-
-
-selectAccount();
 
 export {signIn, signOut, getTokenPopup}

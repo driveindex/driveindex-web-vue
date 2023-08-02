@@ -6,12 +6,12 @@
       </v-col>
       <v-col cols="3" align-self="center">
         <v-btn
-          color="primary"
-          prepend-icon="mdi-account"
-          variant="tonal"
-          @click="initMSALprocess()"
+            color="primary"
+            prepend-icon="mdi-account"
+            variant="tonal"
+            @click="initMSALAuth()"
         >
-          {{ t('client.addAccount')}}
+          {{ t('client.addAccount') }}
         </v-btn>
         <v-btn
             color="primary"
@@ -29,7 +29,8 @@
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
 import {Client} from "./ClientPanel.vue";
-import {createMSALConfig} from "../../core/msal/configGen.ts";
+import {createMSALInstance, Options} from "../../core/msal/configGen.ts";
+import {signIn} from "../../core/msal/authPopup.ts";
 
 const {t} = useI18n()
 
@@ -41,11 +42,14 @@ function clientManagement() {
   props.client.user_manage = false
 }
 
-function initMSALAuth(){
-  const option: Opt = {
-
+function initMSALAuth() {
+  const option: Options = {
+    clientId: props.client.detail.client_id,
+    authority_area: props.client.detail.end_point as 'cn' | 'global' | 'us_gov',
+    redirectUri: '/MSALconfirm',
+    postLogoutRedirectUri: '/MSALLogout',
   }
-  createMSALConfig()
+  signIn(createMSALInstance(option))
 }
 
 </script>
