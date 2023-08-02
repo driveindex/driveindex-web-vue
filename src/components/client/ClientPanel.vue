@@ -72,6 +72,14 @@
             prepend-icon="mdi-delete"
             variant="tonal">{{ t('client.delete') }}
         </v-btn>
+        <v-btn
+          class="clientPanelButton"
+          color="primary"
+          prepend-icon="mdi-microsoft-azure"
+          variant="tonal"
+        >{{t('client.account')}}
+
+        </v-btn>
       </v-col>
     </v-row>
   </v-sheet>
@@ -81,6 +89,7 @@
 import {useI18n} from "vue-i18n";
 import {useRequest} from "alova";
 import {clientCreator, clientModifier, ModifiedClientInfo, NewClientInfo} from "../../core/api/client.ts";
+import {useRouter} from "vue-router";
 
 const {t} = useI18n()
 
@@ -131,6 +140,8 @@ const {
   immediate: false
 })
 
+const router = useRouter()
+
 function saveConfig() {
   if (props.client.new) {
     const newClient: NewClientInfo = {
@@ -144,6 +155,8 @@ function saveConfig() {
     }
     saveSend(newClient).then((result) => {
       console.log(result)
+    }).finally(() => {
+      router.go(0)
     })
   } else {
     const modifyClient: ModifiedClientInfo = {
@@ -156,8 +169,11 @@ function saveConfig() {
     }
     modifySend(modifyClient).then((result) => {
       console.log(result)
+    }).finally(() => {
+      router.go(0)
     })
   }
+
 }
 
 </script>

@@ -17,11 +17,13 @@ export default {
     client: {
         list: "客户端列表",
         add: "添加客户端",
+        unsaved: "有未保存的新客户端",
         save: "保存",
         delete: "删除",
         newClient: "新的客户端",
         newClientSecret: "新的客户端密钥",
-        modifyClientSecret: "在这里修改客户端密钥"
+        modifyClientSecret: "在这里修改客户端密钥",
+        account: "用户管理"
     }
 
 }
