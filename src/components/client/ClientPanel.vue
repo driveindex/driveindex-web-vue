@@ -153,12 +153,13 @@ function saveConfig() {
         azure_client_id: props.client.detail.client_id,
         azure_client_secret: props.client.detail.client_secret,
         tenant_id: props.client.detail.tenant_id,
+        end_point: props.client.detail.end_point as 'global' | 'us_l4' | 'us_l5' | 'cn',
       }
     }
     saveSend(newClient).then((result) => {
       console.log(result)
     }).finally(() => {
-      router.go(0)
+
     })
 
   } else {
@@ -173,7 +174,7 @@ function saveConfig() {
     modifySend(modifyClient).then((result) => {
       console.log(result)
     }).finally(() => {
-      router.go(0)
+
     })
   }
 }
