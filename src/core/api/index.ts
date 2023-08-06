@@ -12,4 +12,10 @@ const alovaInstance = createAlova({
     }
 })
 
+export interface AlovaResponse{
+    code: number,
+    message: string,
+    data?: any
+}
+
 export default alovaInstance

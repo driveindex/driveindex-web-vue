@@ -1,8 +1,24 @@
-import alovaInstance from "./index.ts";
+import alovaInstance, {AlovaResponse} from "./index.ts";
 import {useAuthStore} from "../store/store.ts";
 import pinia from "../store";
 
 const authStore = useAuthStore(pinia)
+
+export interface Client {
+    id: string,
+    name: string,
+    type: string,
+    create_at: string,
+    modify_at: string,
+    detail: {
+        client_id: string,
+        client_secret: string,
+        tenant_id: string,
+        end_point: string,
+    },
+    new: boolean,
+    user_manage: boolean
+}
 
 export const clientListGetter = () =>
     alovaInstance.Get('/user/client', {
@@ -10,6 +26,10 @@ export const clientListGetter = () =>
             Authorization: `Bearer ${authStore.token}`
         }
     })
+
+export interface ClientListResponse extends AlovaResponse{
+    data: Array<Client>
+}
 
 export interface NewClientInfo {
     name: string,
@@ -45,3 +65,4 @@ export const clientModifier = (data: ModifiedClientInfo) =>
             Authorization: `Bearer ${authStore.token}`
         }
     })
+

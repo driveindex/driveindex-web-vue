@@ -28,9 +28,9 @@
 
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
-import {Client} from "./ClientPanel.vue";
 import {createMSALInstance, Options} from "../../core/msal/configGen.ts";
 import {signIn} from "../../core/msal/authPopup.ts";
+import {Client} from "../../core/api/client.ts";
 
 const {t} = useI18n()
 

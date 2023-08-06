@@ -89,26 +89,10 @@
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
 import {useRequest} from "alova";
-import {clientCreator, clientModifier, ModifiedClientInfo, NewClientInfo} from "../../core/api/client.ts";
+import {Client, clientCreator, clientModifier, ModifiedClientInfo, NewClientInfo} from "../../core/api/client.ts";
 import {useRouter} from "vue-router";
 
 const {t} = useI18n()
-
-export interface Client {
-  id: string,
-  name: string,
-  type: string,
-  create_at: string,
-  modify_at: string,
-  detail: {
-    client_id: string,
-    client_secret: string,
-    tenant_id: string,
-    end_point: string,
-  },
-  new: boolean,
-  user_manage: boolean
-}
 
 const props = defineProps<{
   client: Client
