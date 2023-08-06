@@ -3,7 +3,7 @@ import {axiosRequestAdapter} from '@alova/adapter-axios'
 import VueHook from 'alova/vue'
 
 const alovaInstance = createAlova({
-    baseURL: import.meta.env.DI_API_BASE_URL as string,
+    baseURL: import.meta.env.DI_API_BASE_URL as string || '/api',
     statesHook: VueHook,
     requestAdapter: axiosRequestAdapter(),
     timeout: 10000,
