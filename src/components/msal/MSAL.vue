@@ -6,9 +6,6 @@
 import {signIn, getTokenPopup} from "../../core/msal/authPopup.ts";
 import {onMounted} from "vue";
 
-onMounted(() => {
-  signIn()
-})
 </script>
 
 <style scoped>

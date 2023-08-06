@@ -1,18 +1,41 @@
-# Vue 3 + TypeScript + Vite
+# DriveIndex-Web
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+这是 `DriveIndex` 前端的 `Vue 3` 实现，代码十分拙劣，欢迎各路大佬提交优化 PR！
 
-## Recommended IDE Setup
+## 构建
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+1. 项目初始化
 
-## Type Support For `.vue` Imports in TS
+   ```shell
+   npm install
+   ```
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+2. 配置环境变量  
+i. 请在项目根目录下创建一个名为 `.env.development` 的文件(开发环境)
+或 `.env.production` 的文件(生产环境)  
+ii. 并配置以下环境变量:
+```dotenv
+# Development Environment
+# Note only variable name with prefix 'DI_' will be available in the app
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+# The backend API base url
+DI_API_BASE_URL = 'https://example.com/api'
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+```
+
+
+3. 运行
+ - 请注意,你应当先使用.env文件配置好需要的环境变量  
+
+   ```shell
+   vite
+   ```
+
+3. 打包
+
+   ```shell
+   vue-tsc && vite build
+   ```
+
+---
+
