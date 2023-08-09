@@ -59,6 +59,11 @@ let activeGroup = ref([])
 
 const {loading, data, onSuccess} = useRequest(() => clientListGetter(), {
   immediate: true,
+  initialData: {
+    code: 0,
+    message: '',
+    data: []
+  }
 })
 
 
@@ -94,7 +99,8 @@ function addClient() {
 let hasUnsavedClient = ref(false)
 
 watchEffect(() => {
-  if (clients.value.data === undefined) {
+  console.log(clients.value)
+  if (clients.value === undefined) {
     return
   } else {
     for (let i = 0; i < clients.value.data.length; i++) {
