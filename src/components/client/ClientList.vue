@@ -69,7 +69,7 @@ const {loading, data, onSuccess} = useRequest(() => clientListGetter(), {
 
 const clients = ref(data as unknown as ClientListResponse)
 
-// Add a display id for each client
+// All the clients loaded from server are not new
 onSuccess(() => {
   for (let i = 0; i < clients.value.data.length; i++) {
     clients.value.data[i].new = false
@@ -96,21 +96,17 @@ function addClient() {
   activeGroup.value = [clients.value.data[clients.value.data.length - 1].id]
 }
 
+// Disable the new client button when there is unsaved client
 let hasUnsavedClient = ref(false)
 
 watchEffect(() => {
-  console.log(clients.value)
-  if (clients.value === undefined) {
-    return
-  } else {
-    for (let i = 0; i < clients.value.data.length; i++) {
-      if (clients.value.data[i].new) {
-        hasUnsavedClient.value = true
-        return
-      }
+  for (let i = 0; i < clients.value.data.length; i++) {
+    if (clients.value.data[i].new) {
+      hasUnsavedClient.value = true
+      return
     }
-    hasUnsavedClient.value = false
   }
+  hasUnsavedClient.value = false
 })
 
 interface button {

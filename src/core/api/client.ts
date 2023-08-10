@@ -4,6 +4,8 @@ import pinia from "../store";
 
 const authStore = useAuthStore(pinia)
 
+export type supportedEndPoints = 'Global' | 'us_l4' | 'us_l5' | 'CN'
+
 export interface Client {
     id: string,
     name: string,
@@ -27,7 +29,7 @@ export const clientListGetter = () =>
         }
     })
 
-export interface ClientListResponse extends AlovaResponse{
+export interface ClientListResponse extends AlovaResponse {
     data: Array<Client>
 }
 
@@ -38,7 +40,7 @@ export interface NewClientInfo {
         azure_client_id: string,
         azure_client_secret: string,
         tenant_id?: string,
-        end_point?: 'global' | 'us_l4' | 'us_l5' | 'cn'
+        end_point?: supportedEndPoints,
     }
 }
 
@@ -66,3 +68,11 @@ export const clientModifier = (data: ModifiedClientInfo) =>
         }
     })
 
+export const clientDeleter = (client_id: string) =>
+    alovaInstance.Post('/user/client/delete', {
+        client_id
+    }, {
+        headers: {
+            Authorization: `Bearer ${authStore.token}`
+        }
+    })

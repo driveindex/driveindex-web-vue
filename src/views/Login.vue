@@ -24,6 +24,7 @@
                 type="password"
                 v-model="password"
                 :label="t('auth.password')"
+                @keyup.enter="submitCredential"
                 required
             ></v-text-field>
           </v-row>

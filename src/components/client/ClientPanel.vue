@@ -62,7 +62,7 @@
             class="clientPanelButton"
             color="success"
             prepend-icon="mdi-content-save"
-            @click="saveConfig()"
+            @click="saveClient()"
             :loading="saveLoading || modifyLoading"
             variant="tonal">{{ t('client.save') }}
         </v-btn>
@@ -70,15 +70,17 @@
             class="clientPanelButton"
             color="error"
             prepend-icon="mdi-delete"
-            variant="tonal">{{ t('client.delete') }}
+            variant="tonal"
+            @click="deleteClient()"
+        >{{ t('client.delete') }}
         </v-btn>
         <v-btn
-          class="clientPanelButton"
-          color="primary"
-          prepend-icon="mdi-microsoft-azure"
-          variant="tonal"
-          @click="userManagement()"
-        >{{t('client.accountManagement')}}
+            class="clientPanelButton"
+            color="primary"
+            prepend-icon="mdi-microsoft-azure"
+            variant="tonal"
+            @click="userManagement()"
+        >{{ t('client.accountManagement') }}
 
         </v-btn>
       </v-col>
@@ -89,7 +91,15 @@
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
 import {useRequest} from "alova";
-import {Client, clientCreator, clientModifier, ModifiedClientInfo, NewClientInfo} from "../../core/api/client.ts";
+import {
+  Client,
+  clientCreator,
+  clientDeleter,
+  clientModifier,
+  ModifiedClientInfo,
+  NewClientInfo,
+  supportedEndPoints
+} from "../../core/api/client.ts";
 import {useRouter} from "vue-router";
 
 const {t} = useI18n()
@@ -116,7 +126,6 @@ const {
   immediate: false
 })
 
-
 const {
   data: modifyData,
   loading: modifyLoading,
@@ -126,9 +135,18 @@ const {
   immediate: false
 })
 
+const {
+  data: deleteData,
+  loading: deleteLoading,
+  error: deleteError,
+  send: deleteSend
+} = useRequest((client_id: string) => clientDeleter(client_id), {
+  immediate: false
+})
+
 const router = useRouter()
 
-function saveConfig() {
+function saveClient() {
   if (props.client.new) {
     const newClient: NewClientInfo = {
       name: props.client.name,
@@ -137,13 +155,13 @@ function saveConfig() {
         azure_client_id: props.client.detail.client_id,
         azure_client_secret: props.client.detail.client_secret,
         tenant_id: props.client.detail.tenant_id,
-        end_point: props.client.detail.end_point as 'global' | 'us_l4' | 'us_l5' | 'cn',
+        end_point: props.client.detail.end_point as supportedEndPoints,
       }
     }
     saveSend(newClient).then((result) => {
       console.log(result)
-    }).finally(() => {
-
+    }).catch((error) => {
+      console.log(error)
     })
 
   } else {
@@ -157,13 +175,18 @@ function saveConfig() {
     }
     modifySend(modifyClient).then((result) => {
       console.log(result)
-    }).finally(() => {
-
     })
   }
 }
 
-function userManagement(){
+function deleteClient() {
+  deleteSend(props.client.id).then((result) => {
+    console.log(result)
+    router.push('/client')
+  })
+}
+
+function userManagement() {
   props.client.user_manage = true
 }
 
