@@ -17,3 +17,9 @@ body {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
+
+.clientPanelButton {
+    padding: 0;
+    margin: 2px;
+    width: 80%;
+}

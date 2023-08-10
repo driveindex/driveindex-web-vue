@@ -192,13 +192,7 @@ function userManagement() {
 
 </script>
 
-<style>
-.clientPanelButton {
-  padding: 0;
-  margin: 2px;
-  width: 80%;
-}
-
+<style scoped>
 #btnGroup {
   display: flex;
   flex-direction: column;
