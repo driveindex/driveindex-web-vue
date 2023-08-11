@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import {useAuthStore} from "../../core/store/store.ts";
+import {useAuthStore} from "../../core/store/authStore.ts";
 import router from "../../core/router";
 import {useI18n} from "vue-i18n";
 const {t} = useI18n()

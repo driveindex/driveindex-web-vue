@@ -59,7 +59,7 @@ import {ref} from "vue";
 import {loginTokenGetter} from "../core/api/auth.ts";
 import {useRequest} from "alova";
 import {useRouter} from "vue-router";
-import {useAuthStore} from "../core/store/store.ts";
+import {useAuthStore} from "../core/store/authStore.ts";
 
 const {t} = useI18n()
 
