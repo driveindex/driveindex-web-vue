@@ -26,6 +26,10 @@ export default {
         accountManagement: "用户管理",
         clientManagement: "客户端管理",
         addAccount: "添加用户",
+    },
+    MSA: {
+        confirming: "正在确认登录，请稍等...",
+        confirmed: "登录成功",
     }
 
 }

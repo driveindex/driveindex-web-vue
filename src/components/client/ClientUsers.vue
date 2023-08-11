@@ -59,7 +59,7 @@ function initMSALAuth() {
   onSuccess(() => {
     const url: string = data.value.data
     // open a popup window
-    window.open(url, 'MSAL', 'width=500,height=600')
+    window.open(url, 'Microsoft Authentication', 'width=500,height=600')
   })
 }
 
