@@ -8,9 +8,6 @@ dependencies:
   '@alova/adapter-axios':
     specifier: ^1.1.1
     version: 1.1.1
-  '@azure/msal-browser':
-    specifier: ^2.38.0
-    version: 2.38.0
   '@mdi/font':
     specifier: ^7.2.96
     version: 7.2.96
@@ -57,18 +54,6 @@ packages:
 
   /@alova/adapter-axios@1.1.1:
     resolution: {integrity: sha512-boE8Sd7KCLP3O0CSgJK0BHqAynLUTTKTHWD74laGQo6E0OA6LS6AuiR09Qvgbm+EV3vXwqWoAxzHh47B+FyR3g==}
-    dev: false
-
-  /@azure/msal-browser@2.38.0:
-    resolution: {integrity: sha512-gxBh83IumHgEP9uMCm9pJLKLRwICMQTxG9TX3AytdNt3oLUI3tytm/szYD5u5zKJgSkhHvwFSM+NPnM04hYw3w==}
-    engines: {node: '>=0.8.0'}
-    dependencies:
-      '@azure/msal-common': 13.2.0
-    dev: false
-
-  /@azure/msal-common@13.2.0:
-    resolution: {integrity: sha512-rnstQ7Zgn3fSTKNQO+/YNV34/QXJs0vni7IA0/3QB1EEyrJg14xyRmTqlw9ta+pdSuT5OJwUP8kI3D/rBwUIBw==}
-    engines: {node: '>=0.8.0'}
     dev: false
 
   /@babel/helper-string-parser@7.22.5:
