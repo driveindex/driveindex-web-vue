@@ -21,6 +21,11 @@ ii. 并配置以下环境变量:
 # The backend API base url
 DI_API_BASE_URL = 'https://example.com/api'
 
+# The frontend access URL
+# This url has to be the same as the redirect url prefix you configured in the Azure, otherwise the login will fail
+# e.g. redirect url: 'https://example.com/MSALConfirm'; your DI_FRONTEND_URL should be 'https://example.com'
+DI_FRONTEND_URL = 'http://localhost:5173'
+
 ```
 
 
