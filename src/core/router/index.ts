@@ -30,14 +30,7 @@ const routes = [
         }
     },
     {
-        path: '/test',
-        component: () => import("../../components/msal/MSAL.vue"),
-        meta: {
-            requiresAuth: true,
-        }
-    },
-    {
-        path: '/msal-confirm',
+        path: '/MSALConfirm',
         component: () => import("../../components/msal/MSALConfirm.vue"),
         meta: {
             requiresAuth: true,
