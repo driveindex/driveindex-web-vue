@@ -2,7 +2,7 @@
 
 这是 `DriveIndex` 前端的 `Vue 3` 实现，代码十分拙劣，欢迎各路大佬提交优化 PR！
 
-## 构建
+## 运行或构建
 
 1. 项目初始化
 
@@ -28,18 +28,17 @@ DI_FRONTEND_URL = 'http://localhost:5173'
 
 ```
 
-
-3. 运行
- - 请注意,你应当先使用.env文件配置好需要的环境变量  
+3. 运行  
+   请注意,你应当先使用.env文件配置好需要的环境变量
 
    ```shell
-   vite
+   npm run dev
    ```
 
-3. 打包
+4. 打包
 
    ```shell
-   vue-tsc && vite build
+   npm run build
    ```
 
 ---
